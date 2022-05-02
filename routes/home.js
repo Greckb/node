@@ -1,16 +1,16 @@
 const express = require('express');
+const { leerUrls, agregarUrl, eliminarUrl } = require('../controllers/homeController');
+const UrlValidar = require('../middlewares/UrlValidar');
 const router = express.Router();
 
 
-router.get('/', (req,res) =>{
-    const urls = [
-        {origen: "www.google.com/bluuweb", shortURL: "dsfdsfds1" },
-        {origen: "www.google.com/bluuweb2", shortURL: "dsfdsfds2" },
-        {origen: "www.google.com/bluuweb3", shortURL: "dsfdsfds3" },
-    ]
-    res.render('home', {urls: urls});
-})
+router.get('/', leerUrls);
+router.post('/',UrlValidar, agregarUrl);
+router.get('/eliminar/:id',eliminarUrl);
+
 
 
 
 module.exports = router
+
+
