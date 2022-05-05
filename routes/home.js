@@ -1,12 +1,16 @@
 const express = require('express');
-const { leerUrls, agregarUrl, eliminarUrl } = require('../controllers/homeController');
+const { route } = require('express/lib/application');
+const { leerUrls, agregarUrl, eliminarUrl, editarUrl, editarUrlForm, redireccionamiento} = require('../controllers/homeController');
 const UrlValidar = require('../middlewares/UrlValidar');
 const router = express.Router();
 
 
-router.get('/', leerUrls);
-router.post('/',UrlValidar, agregarUrl);
-router.get('/eliminar/:id',eliminarUrl);
+router.get("/", leerUrls);
+router.post("/",UrlValidar, agregarUrl);
+router.get("/eliminar/:id",eliminarUrl);
+router.get("/editar/:id", editarUrlForm);
+router.post("/editar/:id", UrlValidar, editarUrl);
+router.get("/:shortURL", redireccionamiento);
 
 
 

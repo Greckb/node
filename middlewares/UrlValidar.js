@@ -8,9 +8,8 @@ const UrlValidar = (req, res, next) =>{
         } else {
             throw new Error("URL no valida"); 
         }
-    } catch (error) {
-        
-        return res.redirect("/");      
+    } catch (error) {     
+        return res.redirect("/"); 
     }
 };
 
