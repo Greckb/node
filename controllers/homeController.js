@@ -4,7 +4,7 @@ const {nanoid} = require('nanoid');
 //const { url } = require("inspector");
 
 const leerUrls = async(req, res) =>{
-
+    console.log(req.user);
     try {
         const urls = await Url.find().lean(); 
         res.render("home", {urls: urls});
@@ -17,6 +17,7 @@ const leerUrls = async(req, res) =>{
 };
 
 const eliminarUrl = async (req, res) =>{
+
     const { id } = req.params;
     try {
         

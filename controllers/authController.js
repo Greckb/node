@@ -6,13 +6,15 @@ const { insertMany } = require("../models/User");
 
 
 const registerForm = (req, res) => {
-    res.render('Register');
+    res.render("register", {mensajes: req.flash("mensajes")});
+    //res.render('Register');
 }
 
 const registerUser = async (req,res) => {
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-        return res.json(errors);
+        req.flash("mensajes", errors.array());
+        return res.redirect("/auth/register");
     }
    
     const {userName, email, password } = req.body;
@@ -24,12 +26,13 @@ const registerUser = async (req,res) => {
         await user.save();
 
         //Enviar correo para confirmar la cuenta.
-
-        res.redirect('/auth/login');
+        req.flash("mensajes",[{msg:"Revisa tu correo electronico para validar Contraseña"}])
+        res.redirect("/auth/login");
         //res.json(user);
     } catch (error) {
-        
-        res.json({ error: error.message });
+        req.flash("mensajes", [{msg: error.message}]);
+        return res.redirect("/auth/register");
+        //res.json({ error: error.message });
         
     }
 };
@@ -44,43 +47,57 @@ const confirmarCuenta = async (req, res) =>{
         user.cuentaConfirmada = true;
         user.tokenConfirm = null;
         await user.save();
-        res.redirect('/auth/login');
+
+
+        req.flash("mensajes",[{msg:"Cuenta verificada, puedes iniciar session"}])
+        res.redirect("/auth/login");
         
     } catch (error) {
+        req.flash("mensajes", [{msg: error.message}]);
+        return res.redirect("/auth/login");
 
-        res.json({ error: error.message });
+        //res.json({ error: error.message });
     }
     //res.json(token);
 };
 
 const loginForm = (req, res) => {
-    res.render("login");
+    res.render("login", {mensajes: req.flash("mensajes")});
 
 };
 
 const loginUser = async (req, res) => {
 
-    const errors = validationResult(req)
+    const errors = validationResult(req);
     if(!errors.isEmpty()){
-        return res.json(errors);
+        req.flash("mensajes", errors.array());
+        return res.redirect("/auth/login");
     }
 
     const {email, password} = req.body;
     try {
-        
-        const user = await User.findOne({email})
-        if (!user) throw new Error("El Usuario no existe");
+        const user = await User.findOne({email});
+        if (!user) throw new Error("No existe este email");
         if (!user.cuentaConfirmada) throw new Error("La cuenta no esta confirmada");
-        if (!await user.comparePassword(password)) throw new Error("La contraseña no es correcta");
+        if (!(await user.comparePassword(password))) 
+            throw new Error("La contraseña no es correcta");
 
-        res.redirect('/');
+        //Me esta creando la session de usuario a traves de passport
+        req.login(user, function(err){
+            if(err) throw new Error("Error al crear la session");
+            return res.redirect("/");
+        })
+        return res.redirect("/");
         
     } catch (error) {
-        res.json({ error: error.message });
+        req.flash("mensajes", [{msg: error.message}]);
+        return res.redirect("/auth/login");
     }
-
 };
 
+const cerrarSesion =(req,res) =>{
+    req.logout();
+    return res.redirect("/auth/login");
+}
 
-
-module.exports = { loginForm, registerForm, registerUser, confirmarCuenta, loginUser}
+module.exports = { loginForm, registerForm, registerUser, confirmarCuenta, loginUser, cerrarSesion}
