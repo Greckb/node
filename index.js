@@ -1,5 +1,22 @@
-const express = require('express');
+const express = require("express");
+const session = require("express-session");
+const flash = require("connect-flash");
+
 const app = express();
+
+//Con session creamos una session el usuario
+app.use(session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    name: "secret-name-greck"
+    })
+);
+
+//Con esto guardamos la session en flash, solo dura una vez
+app.use(flash());
+
+
 require('dotenv').config();
 require('./database/db');
 const { create } = require("express-handlebars");

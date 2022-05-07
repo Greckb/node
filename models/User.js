@@ -19,7 +19,7 @@ const userSchema = new Schema ({
     },
     password: {
         type: String,
-        required: true,
+        required: true
     },
     tokenConfirm: {
         type: String,
@@ -43,10 +43,15 @@ userSchema.pre("save", async function(next) {
         next();
         
     } catch (error) {
+        //Validar si es que falla la encriptacion de la contraseña
         console.log(error);
+        throw new Error("Error al codificar la contraseña")
         next();  
     }
 
 })
 
+userSchema.methods.comparePassword = async function(candidatePassword){
+    return await bcrypt.compare(candidatePassword, this.password)
+}
 module.exports = mongoose.model('User', userSchema);
