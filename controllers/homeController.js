@@ -3,6 +3,7 @@ const Url = require("../models/url");
 const {nanoid} = require('nanoid');
 //const { url } = require("inspector");
 
+
 const leerUrls = async(req, res) =>{
     console.log(req.user);
     try {
@@ -33,9 +34,12 @@ const eliminarUrl = async (req, res) =>{
 const agregarUrl = async (req, res) =>{
 
     const { origen } = req.body;
+    
+  
 
     try {
        const url = new Url({origen: origen, shortURL: nanoid(8)});
+     
         await url.save();
         res.redirect('/');
         

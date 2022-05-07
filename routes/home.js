@@ -7,10 +7,10 @@ const router = express.Router();
 
 
 router.get("/", verificarUser,leerUrls);
-router.post("/",UrlValidar, agregarUrl);
-router.get("/eliminar/:id",eliminarUrl);
-router.get("/editar/:id", editarUrlForm);
-router.post("/editar/:id", UrlValidar, editarUrl);
+router.post("/",verificarUser,UrlValidar, agregarUrl);
+router.get("/eliminar/:id",verificarUser,eliminarUrl);
+router.get("/editar/:id", verificarUser,editarUrlForm);
+router.post("/editar/:id",verificarUser ,UrlValidar, editarUrl);
 router.get("/:shortURL", redireccionamiento);
 
 

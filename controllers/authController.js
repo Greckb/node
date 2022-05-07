@@ -1,16 +1,22 @@
 //const req = require("express/lib/request");
 const User = require("../models/User");
 const { nanoid } = require("nanoid");
-const {validationResult} = require("express-validator");
-const { insertMany } = require("../models/User");
+const { validationResult } = require("express-validator");
+//const { insertMany } = require("../models/User");
 
 
 const registerForm = (req, res) => {
-    res.render("register", {mensajes: req.flash("mensajes")});
+    res.render("register");
     //res.render('Register');
-}
+};
+
+const loginForm = (req, res) => {
+    res.render("login");
+
+};
 
 const registerUser = async (req,res) => {
+   
     const errors = validationResult(req)
     if(!errors.isEmpty()){
         req.flash("mensajes", errors.array());
@@ -22,7 +28,7 @@ const registerUser = async (req,res) => {
         let user = await User.findOne({email: email});
         if (user) throw new Error("Ya existe el usuario");
         user = new User ({userName, email, password, tokenConfirm: nanoid() });
-        
+
         await user.save();
 
         //Enviar correo para confirmar la cuenta.
@@ -61,10 +67,7 @@ const confirmarCuenta = async (req, res) =>{
     //res.json(token);
 };
 
-const loginForm = (req, res) => {
-    res.render("login", {mensajes: req.flash("mensajes")});
 
-};
 
 const loginUser = async (req, res) => {
 
@@ -87,7 +90,7 @@ const loginUser = async (req, res) => {
             if(err) throw new Error("Error al crear la session");
             return res.redirect("/");
         })
-        return res.redirect("/");
+        //return res.redirect("/");
         
     } catch (error) {
         req.flash("mensajes", [{msg: error.message}]);
@@ -95,9 +98,11 @@ const loginUser = async (req, res) => {
     }
 };
 
+
+
 const cerrarSesion =(req,res) =>{
     req.logout();
     return res.redirect("/auth/login");
-}
+};
 
 module.exports = { loginForm, registerForm, registerUser, confirmarCuenta, loginUser, cerrarSesion}
