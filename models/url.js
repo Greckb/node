@@ -14,6 +14,12 @@ const urlSchema = new Schema ({
         type: String,
         unique: true,
         require: true,
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        require: true,
+
     }
 })
 
