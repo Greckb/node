@@ -1,0 +1,15 @@
+<h1 class="text-center">Usuario</h1>
+<p class="text-center">Edita aqui tu perfil</p>
+<div class="text-center my-4">
+
+    <img src="img/perfiles/Perfil.jpeg" class="rounded-circle" type="image/jpeg" >
+</div>
+
+<form action="/perfil?_csrf={{csrfToken}}" method="post" enctype="multipart/form-data">
+    
+    <input class="form-control form-control-sm" id="formFileSm" type="file">
+    <button class="btn btn-dark my-3">Cambiar Imagen de Perfil</button>
+
+    
+
+</form>
