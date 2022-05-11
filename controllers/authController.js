@@ -2,6 +2,8 @@
 const User = require("../models/User");
 const { nanoid } = require("nanoid");
 const { validationResult } = require("express-validator");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 //const { insertMany } = require("../models/User");
 
 
@@ -32,6 +34,23 @@ const registerUser = async (req,res) => {
         await user.save();
 
         //Enviar correo para confirmar la cuenta.
+        const transport = nodemailer.createTransport({
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+              user: process.env.userEmail,
+              pass: process.env.passEmail,
+            },
+          });
+
+          await transport.sendMail({
+            from: '"Fred Foo 👻" <foo@example.com>', // sender address
+            to: user.email, // list of receivers
+            subject: "Verifica tu cuenta de Email", // Subject line
+            text: "Hello world?", // plain text body
+            html: `<a href="http://127.0.0.1:5000/auth/confirmar/${user.tokenConfirm}">Verifica tu cuenta aqui</a>`, // html body
+          });
+
         req.flash("mensajes",[{msg:"Revisa tu correo electronico para validar Contraseña"}])
         res.redirect("/auth/login");
         //res.json(user);

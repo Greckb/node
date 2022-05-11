@@ -38,8 +38,11 @@ const eliminarUrl = async (req, res) =>{
 
 const agregarUrl = async (req, res) =>{
     const { origen } = req.body;
+    
     try {  
+        
         const url = new Url({origen: origen, shortURL: nanoid(8), user: req.user.id});
+        
         await url.save();
         req.flash("mensajes", [{msg: "URL Agregada"}]);
         return res.redirect('/');   
