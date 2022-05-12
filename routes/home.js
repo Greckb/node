@@ -12,8 +12,8 @@ router.post("/",verificarUser,UrlValidar, agregarUrl);
 router.get("/eliminar/:id",verificarUser,eliminarUrl);
 router.get("/editar/:id", verificarUser,editarUrlForm);
 router.post("/editar/:id",verificarUser ,UrlValidar, editarUrl);
-router.get("/perfil", formPerfil );
-router.post("/perfil", editarFotoPerfil );
+router.get("/perfil", verificarUser, formPerfil );
+router.post("/perfil", verificarUser, editarFotoPerfil );
 router.get("/:shortURL", redireccionamiento);
 
 

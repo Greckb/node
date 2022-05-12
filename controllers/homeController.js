@@ -9,7 +9,8 @@ const leerUrls = async(req, res) =>{
     //console.log(req.user);
     try {
         const urls = await Url.find({user: req.user.id}).lean(); 
-        res.render("home", {urls: urls});    
+        res.render("home", {urls: urls}); 
+        
     } catch (error) {
         //console.log(error);
         //res.send("Algo esta pasando")
