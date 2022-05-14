@@ -1,21 +1,43 @@
 const express = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
+const MongoStore = require('connect-mongo');
 const passport = require("passport");
 const { create } = require("express-handlebars");
 const csrf = require("csurf")
 const User = require("./models/User");
+const mongoSanitize = require('express-mongo-sanitize');
+const cors = require("cors");
 require('dotenv').config();
-require('./database/db');
+
+//require('./database/db');
+
+const clientDb = require("./database/db");
 
 const app = express();
 
+const corsOptions = {
+    credentials: true,
+    origin: process.env.PATHHEROKU || "*",
+    methods: ['GET', 'POST'],
+};
+
+app.use(cors());
+
 //Con session creamos una session el usuario
 app.use(session({
-    secret: "keyboard cat",
+    secret: process.env.SECRETSESSION,
     resave: false,
     saveUninitialized: false,
-    name: "secret-name-greck"
+    name: "secret-name-greck",
+    store: MongoStore.create({
+        clientPromise: clientDb,
+        dbName: process.env.DBNAME,
+    }),
+    //Esto configura la seguridad de las coockie SECURE EN True es para produccion porque es HTPPS y en desarrollo "localhos" utiliza HTPP:
+    cookie: { 
+        secure: process.env.MODO === "production", 
+        maxAge: 30 * 24 * 60 * 60 * 1000 },
     })
 );
 
@@ -50,7 +72,7 @@ app.use(express.static(__dirname + "/public"))
 app.use(express.urlencoded({extended: true}));
 
 app.use(csrf());
-
+app.use(mongoSanitize());
 
 app.use((req, res, next) => {
     res.locals.csrfToken = req.csrfToken();
