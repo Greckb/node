@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
 require("dotenv").config();
+const mongoose = require('mongoose');
 
 const clientDb = mongoose
 .connect(process.env.URI)
@@ -10,4 +10,5 @@ const clientDb = mongoose
 .catch(e => console.log("Fallo la conexion" + e))
 
 //Guardamos toda la conexion en clientdb
-module.exports= clientDb
+
+module.exports = clientDb;

@@ -22,10 +22,10 @@ const corsOptions = {
     methods: ['GET', 'POST'],
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.set("trust proxy", 1);
-//Con session creamos una session el usuario
+
 app.use(session({
     secret: process.env.SECRETSESSION,
     resave: false,
