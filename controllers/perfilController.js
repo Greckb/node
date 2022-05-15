@@ -60,13 +60,11 @@ module.exports.editarFotoPerfil = async (req, res) =>{
             //Redirigo la direccion para poder guardar la imagen
             
             const dirFile = path.join(__dirname, `../public/img/perfiles/${req.user.id}.${extension}`) 
-            util.pump(readStream,writeStream, function() {
-                fs.unlinkSync(dirFile);
-               });
+            
             //console.log(dirFile + extension)
             
             //Con esto cogemos la ruta de donde viene y la redirigimos a nuestro servidor
-            fs.renameSync(file.filepath, dirFile);
+            fs.renameSync(file.upload.path, dirFile);
 
             //Con esto lo leemos la imagen y la reajustamos
             const image = await Jimp.read(dirFile);
