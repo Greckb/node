@@ -19,7 +19,7 @@ module.exports.editarFotoPerfil = async (req, res) =>{
 
     const form = new formidable.IncomingForm();
 
-    form.uploadDir='tmp'
+    
     form.maxFileSize = 50 * 1024 * 1024 //estos datos son 5M bytes
 
     form.parse(req, async(err, fields, files) =>{
@@ -55,6 +55,7 @@ module.exports.editarFotoPerfil = async (req, res) =>{
             //Con esto pillo la extension del archivo, porque separa el image/ que seria el 0 y nos devuelve el 1 que seria jpg,png,...
             const extension = file.mimetype.split("/")[1]
             //Redirigo la direccion para poder guardar la imagen
+            
             const dirFile = path.join(__dirname, `../public/img/perfiles/${req.user.id}.${extension}`) 
             console.log(dirFile + extension)
 
