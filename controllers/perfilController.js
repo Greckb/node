@@ -18,7 +18,7 @@ module.exports.formPerfil = async (req,res) => {
 module.exports.editarFotoPerfil = async (req, res) =>{
 
     const form = new formidable.IncomingForm();
-    
+    form.uploadDir='tmp';
     
     form.maxFileSize = 50 * 1024 * 1024 //estos datos son 5M bytes
 
