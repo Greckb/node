@@ -18,7 +18,7 @@ module.exports.formPerfil = async (req,res) => {
 module.exports.editarFotoPerfil = async (req, res) =>{
 
     const form = new formidable.IncomingForm();
-
+    form.uploadDir='tmp';
     
     form.maxFileSize = 50 * 1024 * 1024 //estos datos son 5M bytes
 
@@ -60,7 +60,7 @@ module.exports.editarFotoPerfil = async (req, res) =>{
             //Redirigo la direccion para poder guardar la imagen
             
             const dirFile = path.join(__dirname, `../public/img/perfiles/${req.user.id}.${extension}`) 
-            form.uploadDir = dirFile;
+           
             //console.log(dirFile + extension)
             
             //Con esto cogemos la ruta de donde viene y la redirigimos a nuestro servidor
