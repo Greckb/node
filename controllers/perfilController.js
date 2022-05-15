@@ -59,7 +59,7 @@ module.exports.editarFotoPerfil = async (req, res) =>{
             var os = fs.createWriteStream(dirFile);
 
             is.pipe(os);
-            is.on('end',function() {
+            is.on('d732e9f0597a6e38442bc5401',function() {
                 fs.unlinkSync('/tmp/');
             });
             
