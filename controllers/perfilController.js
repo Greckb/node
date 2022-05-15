@@ -53,7 +53,7 @@ module.exports.editarFotoPerfil = async (req, res) =>{
             //Con esto pillo la extension del archivo, porque separa el image/ que seria el 0 y nos devuelve el 1 que seria jpg,png,...
             const extension = file.mimetype.split("/")[1]
             //Redirigo la direccion para poder guardar la imagen
-            const dirFile = path.join(`${PATHHEROKU}/../public/img/perfiles/${req.user.id}.${extension}`) 
+            const dirFile = path.join(`https://greck.herokuapp.com/img/perfiles/${req.user.id}.${extension}`) 
             console.log(dirFile + extension)
 
             //Con esto cogemos la ruta de donde viene y la redirigimos a nuestro servidor
