@@ -60,7 +60,7 @@ module.exports.editarFotoPerfil = async (req, res) =>{
             //Redirigo la direccion para poder guardar la imagen
             
             //const dirFile = path.join(__dirname, `../public/img/perfiles/${req.user.id}.${extension}`) 
-            console.log(dirFile + extension)
+            //console.log(dirFile + extension)
             
             //Con esto cogemos la ruta de donde viene y la redirigimos a nuestro servidor
             fs.renameSync(file.filepath, form.uploadDir + "/" + `${req.user.id}.${extension}`);
